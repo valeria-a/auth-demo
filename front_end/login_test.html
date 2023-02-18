@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <script>
+
+        const HOST = 'https://f5d9-85-250-238-98.eu.ngrok.io/'
+
+        window.onload = () => {
+            // fetch('http://127.0.0.1:8000/me/')
+            fetch(`${HOST}me/`)
+            .then((response) => response.json())
+            .then((json) => 
+                {
+                    console.log(json)
+                    document.getElementById('user-data').innerText = `Hello ${json.first_name} ${json.last_name}!`
+                })
+            .catch((error) => 
+                {
+                    console.error(error)
+                })
+        }
+
+        function login(event) {
+
+            event.preventDefault()
+
+            formData = new FormData(event.target)
+            //https://650f-85-250-238-98.eu.ngrok.io
+
+            fetch(`${HOST}login/`, 
+                {method: 'POST', body: formData, headers: new Headers({
+                "ngrok-skip-browser-warning": "69420",
+            })})
+            // fetch('http://127.0.0.1:8000/login/', {method: 'POST', body: formData})
+            .then((response) => console.log('success'))
+            .catch((error) => console.error(error))
+        }
+
+        function getRestrictedData() {
+            // fetch('https://c01e-31-154-74-222.eu.ngrok.io/restricted/', 
+            // {headers: new Headers({
+            //     "ngrok-skip-browser-warning": "69420",
+            // })})
+
+            fetch('http://127.0.0.1:8000/me/')
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error))
+        }
+
+        function getVersion() {
+            fetch('http://127.0.0.1:8000/version/')
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                document.getElementById('version').innerText = `Version: ${json.version}`
+            })
+            .catch((error) => console.error(error))
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <div>
+        <p id="user-data"></p>
+    </div>
+
+    <!-- <button onclick="getRestrictedData()">Display restricted data</button> -->
+
+    <button onclick="getVersion()">Get version</button>
+
+    <p id="version"></p>
+
+    <form onsubmit="login(event)">
+
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" value="">
+
+        <br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" value="">
+
+        <br>
+
+        <input type="submit" value="Login">
+
+    </form>
+
+</body>
+</html>
